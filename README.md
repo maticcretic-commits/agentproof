@@ -73,6 +73,9 @@ AgentProof is the first tool in the [AgentForge](https://github.com/maticcretic-
 - **AgentProof** — verify agent work (this repo)
 - **[PromptRE](https://github.com/maticcretic-commits/promptre)** — reverse-engineer agent prompts
 - **[AgentCI](https://github.com/maticcretic-commits/agentci)** — regression harness for agents
+- **[SecretScan](https://github.com/maticcretic-commits/secretscan)** — scan agent outputs for leaked secrets
+
+AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*.
 
 ## License
 
