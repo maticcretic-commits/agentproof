@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentproof"
+version = "1.0.0"
+description = "Verify agent-generated code. Your AI agent says it worked. Prove it."
+requires-python = ">=3.9"
+license = {text = "MIT"}
+
+[project.scripts]
+agentproof = "agentproof:main"
+
+[tool.setuptools]
+py-modules = ["agentproof"]
+package-dir = {"" = "src"}
