@@ -1,4 +1,5 @@
 """Tests for AgentProof core checks."""
+import json
 import subprocess
 import sys
 import tempfile
@@ -83,3 +84,41 @@ def test_tests_no_command_is_unknown():
     repo = make_repo()
     r = check_tests("", str(repo))
     assert r.status == "unknown"
+
+
+SCRIPT = Path(__file__).parent.parent / "src" / "agentproof.py"
+
+
+def test_json_envelope_keys():
+    repo = make_repo()
+    r = subprocess.run([sys.executable, str(SCRIPT), "check", "--format", "json"],
+                       cwd=repo, capture_output=True, text=True)
+    payload = json.loads(r.stdout)
+    assert payload["tool"] == "agentproof"
+    assert payload["version"] == "1.0.0"
+    assert payload["schema_version"] == 1
+    assert "findings_summary" in payload
+    assert "count" in payload["findings_summary"]
+    assert payload["findings_summary"]["highest_severity"] in (
+        "CRITICAL", "HIGH", "INFO", "NONE")
+    # existing payload keys untouched
+    for key in ("repo", "branch", "commit", "timestamp", "checks"):
+        assert key in payload
+
+
+def test_version_flag():
+    r = subprocess.run([sys.executable, str(SCRIPT), "--version"],
+                       capture_output=True, text=True)
+    assert r.returncode == 0
+    assert r.stdout.strip() == "agentproof 1.0.0"
+
+
+def test_unknown_verdict_exits_1():
+    # A clean repo with no changes/config yields UNKNOWN checks and no
+    # failures, so the verdict is UNKNOWN — a FAIL-class outcome (exit 1)
+    # per the family exit-code contract in CONVENTIONS.md.
+    repo = make_repo()
+    r = subprocess.run([sys.executable, str(SCRIPT), "check"],
+                       cwd=repo, capture_output=True, text=True)
+    assert r.returncode == 1, r
+    assert "UNKNOWN" in r.stdout
