@@ -20,6 +20,8 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+VERSION = "1.0.0"
+
 
 @dataclass
 class CheckResult:
@@ -196,12 +198,20 @@ def cmd_check(args):
     report.checks.append(check_tests(test_cmd, cwd))
 
     if args.format == "json":
-        print(json.dumps(asdict(report), indent=2))
+        payload = asdict(report)
+        payload["tool"] = "agentproof"
+        payload["version"] = VERSION
+        payload["schema_version"] = 1
+        payload["findings_summary"] = {
+            "count": report.failed + report.unknown,
+            "highest_severity": "HIGH" if report.failed else ("INFO" if report.unknown else "NONE"),
+        }
+        print(json.dumps(payload, indent=2))
     else:
         print_markdown(report)
 
-    # CI-friendly exit codes: 0 = PASS, 1 = FAIL, 2 = UNKNOWN
-    sys.exit({"PASS": 0, "FAIL": 1, "UNKNOWN": 2}[report.verdict])
+    # Family exit-code contract (CONVENTIONS.md): 0 pass / 1 fail-or-unknown / 2 caller error
+    sys.exit({"PASS": 0, "FAIL": 1, "UNKNOWN": 1}[report.verdict])
 
 
 def print_markdown(r: ProofReport):
@@ -249,6 +259,9 @@ def main():
     ap = argparse.ArgumentParser(
         prog="agentproof",
         description="Verify agent-generated code. Your AI agent says it worked. Prove it.")
+    ap.add_argument("--version", action="version", version=f"agentproof {VERSION}")
+    ap.add_argument("--no-color", action="store_true",
+                    help="disable color output (accepted; output is color-free, NO_COLOR is also honored)")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     c = sub.add_parser("check", help="verify current changes")
