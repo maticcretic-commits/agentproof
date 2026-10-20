@@ -71,8 +71,8 @@ The agent said "done." The login page doesn't render. AgentProof caught it in 3 
 
 AgentProof is the first tool in the [AgentForge](https://github.com/maticcretic-commits) trust layer for AI agents:
 - **AgentProof** — verify agent work (this repo)
-- **PromptRE** — reverse-engineer agent prompts (coming soon)
-- **Agent CI** — regression harness for agents (coming soon)
+- **[PromptRE](https://github.com/maticcretic-commits/promptre)** — reverse-engineer agent prompts
+- **[AgentCI](https://github.com/maticcretic-commits/agentci)** — regression harness for agents
 
 ## License
 
