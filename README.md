@@ -74,8 +74,9 @@ AgentProof is the first tool in the [AgentForge](https://github.com/maticcretic-
 - **[PromptRE](https://github.com/maticcretic-commits/promptre)** — reverse-engineer agent prompts
 - **[AgentCI](https://github.com/maticcretic-commits/agentci)** — regression harness for agents
 - **[SecretScan](https://github.com/maticcretic-commits/secretscan)** — scan agent outputs for leaked secrets
+- **[CostLedger](https://github.com/maticcretic-commits/costledger)** — cost accounting for agent runs
 
-AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*.
+AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*; CostLedger checks what it *cost*.
 
 ## License
 
