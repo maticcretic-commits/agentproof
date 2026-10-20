@@ -79,8 +79,9 @@ AgentProof is the first tool in the [AgentForge](https://github.com/maticcretic-
 - **[SkillAudit](https://github.com/maticcretic-commits/skillaudit)** — audit agent skills for hidden instructions and quality
 - **[PromptDiff](https://github.com/maticcretic-commits/promptdiff)** — diff prompt versions
 - **[TraceTape](https://github.com/maticcretic-commits/tracetape)** — the canonical run tape
+- **[PromptLint](https://github.com/maticcretic-commits/promptlint)** — lint prompts for quality defects
 
-AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*; CostLedger checks what it *cost*; SchemaGuard checks the output still *fits the contract*; SkillAudit checks the skill was *safe to install*; PromptDiff checks what the prompt change *changed*; TraceTape keeps the whole run on *tape*.
+AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*; CostLedger checks what it *cost*; SchemaGuard checks the output still *fits the contract*; SkillAudit checks the skill was *safe to install*; PromptDiff checks what the prompt change *changed*; TraceTape keeps the whole run on *tape*; PromptLint keeps the prompt itself *linted clean*.
 
 ## License
 
