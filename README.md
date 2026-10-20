@@ -81,8 +81,9 @@ AgentProof is the first tool in the [AgentForge](https://github.com/maticcretic-
 - **[TraceTape](https://github.com/maticcretic-commits/tracetape)** — the canonical run tape
 - **[PromptLint](https://github.com/maticcretic-commits/promptlint)** — lint prompts for quality defects
 - **[ClaimCheck](https://github.com/maticcretic-commits/claimcheck)** — audit agent reports against their evidence
+- **[TrustBadge](https://github.com/maticcretic-commits/trustbadge)** — one trust score and badge for the whole family
 
-AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*; CostLedger checks what it *cost*; SchemaGuard checks the output still *fits the contract*; SkillAudit checks the skill was *safe to install*; PromptDiff checks what the prompt change *changed*; TraceTape keeps the whole run on *tape*; PromptLint keeps the prompt itself *linted clean*; ClaimCheck makes sure every claim is *backed*.
+AgentProof checks what an agent *did*; PromptRE checks what it was *told*; AgentCI checks it still *works* after you change it; SecretScan checks that nothing *leaked*; CostLedger checks what it *cost*; SchemaGuard checks the output still *fits the contract*; SkillAudit checks the skill was *safe to install*; PromptDiff checks what the prompt change *changed*; TraceTape keeps the whole run on *tape*; PromptLint keeps the prompt itself *linted clean*; ClaimCheck makes sure every claim is *backed*; TrustBadge puts the family's score *on one badge*.
 
 ## License
 
