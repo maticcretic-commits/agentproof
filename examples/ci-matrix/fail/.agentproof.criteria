@@ -1,0 +1,3 @@
+# CI-matrix fail case: the agent ships a login page, but the criterion
+# expects a logout page — it must FAIL.
+logout page renders :: python3 -c "assert 'logout' in open('index.html').read().lower()"
