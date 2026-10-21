@@ -1,6 +1,15 @@
-# AgentForge family dogfood: this repo verifies itself with the
-# shared reusable workflow (maticcretic-commits/.github) — AgentProof checks this working tree (git evidence + criteria) on every push.
-# Reports are uploaded as run artifacts; a FAIL verdict fails the job.
+# AgentForge family dogfood for agentproof.
+#
+# DESIGN NOTE (2026-10-21): this caller does NOT use the shared reusable
+# workflow (maticcretic-commits/.github). That workflow runs the tool
+# against the caller checkout and treats the tool's exit code as the
+# build result — but on a clean push checkout `agentproof check` has no
+# uncommitted changes to verify, so the tool *correctly* reports UNKNOWN
+# (exit 1) and every build goes red. The tool was right; the question
+# was wrong. Instead, this job exercises the tool deterministically
+# against the bundled CI-matrix fixtures (examples/ci-matrix/): one case
+# that must PASS (exit 0) and one case whose criterion must FAIL
+# (exit 1). Either deviation fails the build.
 
 name: verify
 
@@ -13,7 +22,29 @@ permissions:
 
 jobs:
   verify:
-    uses: maticcretic-commits/.github/.github/workflows/agentforge-verify.yml@main
-    with:
-      tool: agentproof
-      args: check --format json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install agentproof from this repo
+        run: python -m pip install .
+
+      - name: CI matrix — pass case must exit 0
+        run: |
+          set +e
+          bash examples/ci-matrix/run-case.sh pass
+          code=$?
+          [ "$code" -eq 0 ] || { echo "expected exit 0, got $code"; exit 1; }
+
+      - name: CI matrix — fail case must exit 1
+        run: |
+          set +e
+          bash examples/ci-matrix/run-case.sh fail
+          code=$?
+          [ "$code" -eq 1 ] || { echo "expected exit 1, got $code"; exit 1; }
