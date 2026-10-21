@@ -1,0 +1,2 @@
+# CI-matrix pass case: the agent ships a login page; the criterion must hold.
+login page renders :: python3 -c "assert 'login' in open('index.html').read().lower()"
