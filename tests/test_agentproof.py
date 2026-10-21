@@ -10,6 +10,30 @@ from agentproof import (check_git_diff, check_protected_files,
                         check_criteria_file, check_tests)
 
 
+import tempfile
+
+def test_load_config_strips_one_quote_pair_only(tmp_path):
+    # Regression: a naive strip("'\"") ate a closing single quote nested
+    # inside double quotes, corrupting commands like:
+    #   test_command: "python3 -c 'import sys; sys.exit(0)'"
+    from agentproof import load_config
+    (tmp_path / ".agentproof.yml").write_text(
+        'test_command: "python3 -c \'import sys; sys.exit(0)\'"\n'
+        "criteria_file: '.agentproof.criteria'\n")
+    cfg = load_config(str(tmp_path))
+    assert cfg["test_command"] == "python3 -c 'import sys; sys.exit(0)'"
+    assert cfg["criteria_file"] == ".agentproof.criteria"
+
+
+def test_config_quoted_command_runs(tmp_path):
+    from agentproof import load_config, check_tests
+    (tmp_path / ".agentproof.yml").write_text(
+        'test_command: "python3 -c \'import sys; sys.exit(0)\'"\n')
+    cfg = load_config(str(tmp_path))
+    r = check_tests(cfg["test_command"], str(tmp_path))
+    assert r.status == "pass", r
+
+
 def make_repo():
     d = tempfile.mkdtemp()
     Path(d, "README.md").write_text("# test\n")
