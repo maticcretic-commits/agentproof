@@ -169,7 +169,14 @@ def load_config(cwd):
                     for line in p.read_text().splitlines():
                         if ":" in line and not line.strip().startswith("#"):
                             k, v = line.split(":", 1)
-                            k, v = k.strip(), v.strip().strip("'\"")
+                            v = v.strip()
+                            # Strip ONE matched pair of quotes only: a naive
+                            # strip("'\"") would also eat a closing single
+                            # quote nested inside double quotes (e.g.
+                            # test_command: "python3 -c '...'"), corrupting it.
+                            if len(v) >= 2 and v[0] == v[-1] and v[0] in "'\"":
+                                v = v[1:-1]
+                            k = k.strip()
                             if k == "protected":
                                 cfg[k] = [x.strip() for x in v.split(",")]
                             else:
